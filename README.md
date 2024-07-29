@@ -17,53 +17,35 @@ Tailor the analysis according to your needs by adjusting settings and parameters
 
 ## How to Use
 
-1. **Upload a PDF Report**
+1. **Select an LLM**
+   - Select an LLM in the sidebar configuration.
+
+2. **Upload a PDF Report**
    - Use the file uploader in the sidebar to select and upload the PDF report you want to analyze.
+  
+3. **Submit Configuration and PDF**
+   - Press the submit button once the model is selected and the PDF uploaded.
 
-2. **Configure Analysis Settings**
-   - Adjust the analysis settings as needed. Options include selecting specific sections, adjusting summarization levels, and more.
+4a. **Run QA Batch**
+   - In the 'Batch Q&A' tab you can upload a CSV file with a batch of questions you want to ask and press process batch.
+   - IMPORTANT: The column name in the CSV file needs to be 'Questions' for it to work properly.
 
-3. **View Analysis Results**
-   - Explore the results through various visualizations provided by the application. These include extracted text, key points, summaries, and trend analysis.
+5a. **Download the result**
+   - When the QA Batch is finished press download to download a CSV file with all the questions and answers.
+     
+4b. **Interactive QA**
+   - In the 'Interactive Q&A' tab you can ask single questions.
 
 ## Data Source
 The application processes PDF reports uploaded by the user. It uses OpenAI's API to perform the analysis or Huggingface's API paired with the [LLama3 8B Instruct model](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct).
 
-## Installation
-
-1. Clone the repository:
-   \`\`\`bash
-   git clone https://github.com/dataminer33/llmReportAnalyzer.git
-   cd llmReportAnalyzer
-   \`\`\`
-
-2. Create a virtual environment and activate it:
-   \`\`\`bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use \`venv\Scripts\activate\`
-   \`\`\`
-
-3. Install the required packages:
-   \`\`\`bash
-   pip install -r requirements.txt
-   \`\`\`
-
-4. Set up your OpenAI API key:
-   - Add your OpenAI API key in a file named \`api_keys.py\`:
-     \`\`\`python
-     OPENAI_API_KEY = 'your_openai_api_key'
-     \`\`\`
 
 ## Usage
 
-1. Run the Streamlit application:
-   \`\`\`bash
-   streamlit run streamlit_app.py
-   \`\`\`
+Deploy on Streamlit Cloud:
+- Create an Account: Sign up at Streamlit Cloud.
+- Connect to GitHub: Link your Streamlit account to your GitHub repository.
+- Enter your OpenAI and Hugginface API keys into the Secrets under 'Advanced settings'
+- Deploy the App: In Streamlit Cloud, select the repository and branch, then click "Deploy".
 
-2. Open your web browser and go to \`http://localhost:8501\` to interact with the application.
 
-## Acknowledgments
-
-- Thanks to the Streamlit community for creating an amazing tool for data visualization.
-- Special thanks to OpenAI for providing the powerful language models used in this application.
