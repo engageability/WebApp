@@ -1,7 +1,5 @@
 streamlit~=1.36.0   
-langchain~=0.2.11
 langchain_openai~=0.1.16
-langchain_huggingface~=0.0.3 
 torch~=2.3.1
 openai~=1.35.14 
 pypdf~=4.2.0
@@ -10,4 +8,6 @@ langchain-community~=0.2.10
 protobuf~=3.20.0
 cryptography~=3.4.7
 chromadb~=0.5.3
+sentence_transformers 
 pysqlite3-binary 
+langchain_huggingface~=0.0.3 

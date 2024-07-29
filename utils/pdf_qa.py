@@ -1,14 +1,12 @@
-import torch, os, re, openai
-from langchain.document_loaders import PyPDFLoader
+import  openai
+from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import ChatOpenAI
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain.chains import RetrievalQA
-from langchain.embeddings import  HuggingFaceEmbeddings
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain_huggingface import HuggingFaceEndpoint
+#from langchain_community.embeddings import  HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEndpoint, HuggingFaceEmbeddings
 from utils.constants import *
-import streamlit as st
 
 
 
@@ -28,11 +26,10 @@ class PdfQA:
     # The following class methods are useful to create global GPU model instances
     # This way we don't need to reload models in an interactive app,
     # and the same model instance can be used across multiple user sessions
-    @classmethod
-    def create_baai_large(cls):
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        return HuggingFaceEmbeddings(model_name=EMB_BAAI_V15_LARGE, model_kwargs={"device": device})
- 
+
+    def create_mpnet_base_v1():
+        return HuggingFaceEmbeddings(model_name=EMB_MPNET_BASE_V1)
+        
 
     #@classmethod
     def create_llama3_8B_instruct(self,temp = 0.01, max_new_tokens = 128):
@@ -41,14 +38,14 @@ class PdfQA:
 
 
     def init_embeddings(self) -> None:
-        if self.config["embedding"] == EMB_BAAI_V15_LARGE:
-            self.embedding = PdfQA.create_baai_large()
+        if self.config["embedding"] == EMB_MPNET_BASE_V1:
+            self.embedding = PdfQA.create_mpnet_base_v1()
         else:
             self.embedding = None 
 
     def init_models(self) -> None:
         """ Initialize LLM models based on config """
-        if (self.config["llm"] == LLM_OPENAI_GPT35) or (self.config["llm"] == LLM_OPENAI_GPT4O) or (self.config["llm"] == LLM_OPENAI_GPT4O_MINI):
+        if (self.config["llm"] == LLM_OPENAI_GPT35) or (self.config["llm"] == LLM_OPENAI_GPT4O) or (self.config["llm"] == LLM_OPENAI_GPT4O_MINI) or (self.config["llm"] == LLM_OPENAI_GPT4):
             openai.api_key = self.openai_api_key
             pass
         elif self.config["llm"] == LLM_LLAMA3_INSTRUCT:
@@ -63,14 +60,8 @@ class PdfQA:
         """
         creates vector db for the embeddings and persists them or loads a vector db from the persist directory
         """
-        if self.vectordb:
-            st.write("Closing current vectordb connection")
-            self.vectordb.delete_collection()
-            self.vectordb = None
-
 
         pdf_path = self.config.get("pdf_path",None)
-        st.write(f"PDF Path: {pdf_path}")
         if pdf_path:
             loader = PyPDFLoader(pdf_path)
             documents = loader.load()
@@ -94,7 +85,7 @@ class PdfQA:
         
         self.retriever = self.vectordb.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 
-        if (self.config["llm"] == LLM_OPENAI_GPT35) or (self.config["llm"] == LLM_OPENAI_GPT4O) or (self.config["llm"] == LLM_OPENAI_GPT4O_MINI):
+        if (self.config["llm"] == LLM_OPENAI_GPT35) or (self.config["llm"] == LLM_OPENAI_GPT4O) or (self.config["llm"] == LLM_OPENAI_GPT4O_MINI) or (self.config["llm"] == LLM_OPENAI_GPT4):
             self.qa = RetrievalQA.from_chain_type(
                 llm=ChatOpenAI(model_name=self.config["llm"], temperature=0),
                 chain_type="stuff",
@@ -111,7 +102,7 @@ class PdfQA:
                 
             )
 
-    def answer_query(self, question: str) -> str:
+    def answer_query(self, st, question: str) -> str:
         """
         Answer the question
         """
