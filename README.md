@@ -26,14 +26,14 @@ Use the file uploader in the sidebar to select and upload the PDF report you wan
 3. **Submit Configuration and PDF**
 Press the submit button once the model is selected and the PDF uploaded.
 
-4a. **Run QA Batch**
+4.a **Run QA Batch**
 In the 'Batch Q&A' tab you can upload a CSV file with a batch of questions you want to ask and press process batch.
 IMPORTANT: The column name in the CSV file needs to be 'Questions' for it to work properly.
 
-5a. **Download the result**
+5.a **Download the result**
 When the QA Batch is finished press download to download a CSV file with all the questions and answers.
      
-4b. **Interactive QA**
+4.b **Interactive QA**
 In the 'Interactive Q&A' tab you can ask single questions.
 
 ## Data Source
